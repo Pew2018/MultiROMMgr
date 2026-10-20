@@ -14,7 +14,9 @@ The APK filename does not change the application version to "001".
 
 Baseline: AGP 1.5.0, Gradle 2.2.1, compile SDK 23, build tools 23.0.2.
 Rebuild: AGP 4.2.2, Gradle 6.7.1, Java 11, compile SDK 23, build tools 30.0.3.
-Google Maven supplies the original Android support libraries. No AndroidX migration,
+The unrecognized historical wrapper JAR is replaced by the official Gradle v6.7.1
+wrapper from gradle/gradle (blob e708b1c023ec8b20f512888fe07c5bd3ff77bb8f);
+CI wrapper validation remains enabled. Google Maven supplies the original Android support libraries. No AndroidX migration,
 target SDK increase, recovery image/kernel change, or embedded executable replacement.
 
 ## Evidence and compatibility assessment
