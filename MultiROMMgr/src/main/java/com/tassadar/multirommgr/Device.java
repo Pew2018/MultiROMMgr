@@ -30,6 +30,7 @@ import org.json.JSONTokener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class Device {
     private static final String TAG = "MROMMgr::Device";
@@ -38,7 +39,8 @@ public class Device {
         Context ctx = MgrApp.getAppContext();
         StringBuilder b = new StringBuilder();
 
-        name = name.toLowerCase();
+        if (name == null) return null;
+        name = name.toLowerCase(Locale.US);
 
         try {
             InputStream in = ctx.getAssets().open("devices.json");
@@ -60,7 +62,7 @@ public class Device {
 
                 names = o.getJSONArray("names");
                 for(int x = 0; x < names.length(); ++x)
-                    if (name.equals(names.getString(x).toLowerCase()))
+                    if (name.equals(names.getString(x).toLowerCase(Locale.US)))
                         return new Device(name, names.getString(0), o);
             }
             return null;

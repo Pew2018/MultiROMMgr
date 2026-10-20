@@ -317,14 +317,16 @@ public class MultiROM {
 
     public static int[] parseMultiRomVersions(String ver) {
         int[] res = { 0, 0 };
-        if(!Utils.isNumeric(ver.charAt(ver.length()-1))) {
-            res[1] = (int)ver.charAt(ver.length()-1);
-            ver = ver.substring(0, ver.length()-1);
-        }
+        if (ver == null) return res;
+        java.util.regex.Matcher match = java.util.regex.Pattern
+                .compile("^v?([0-9]+)([a-zA-Z]?)(?:[-_].*)?$").matcher(ver.trim());
+        if (!match.matches()) return res;
         try {
-            res[0] = Integer.valueOf(ver);
-        } catch(NumberFormatException e) {
-            e.printStackTrace();
+            res[0] = Integer.parseInt(match.group(1));
+            if (!match.group(2).isEmpty())
+                res[1] = match.group(2).toLowerCase(java.util.Locale.US).charAt(0);
+        } catch (NumberFormatException e) {
+            return new int[] { 0, 0 };
         }
         return res;
     }

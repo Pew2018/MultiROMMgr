@@ -69,6 +69,15 @@ public class MainActivity extends AppCompatActivity implements StatusAsyncTask.S
 
         setContentView(R.layout.activity_main);
 
+        // targetSdk 23 requires a runtime grant for the existing Download directory.
+        if (Build.VERSION.SDK_INT >= 23 &&
+                android.support.v4.content.ContextCompat.checkSelfPermission(this,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                        android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            android.support.v4.app.ActivityCompat.requestPermissions(this,
+                    new String[] { android.Manifest.permission.WRITE_EXTERNAL_STORAGE }, 100);
+        }
+
         // This activity is using different background color, which would cause overdraw
         // of the whole area, so disable the default background
         getWindow().setBackgroundDrawable(null);

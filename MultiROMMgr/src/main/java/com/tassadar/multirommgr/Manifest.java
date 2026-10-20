@@ -63,6 +63,9 @@ public class Manifest {
             if(p.getBoolean(SettingsFragment.DEV_OVERRIDE_MANIFEST, false))
                 url = p.getString(SettingsFragment.DEV_MANIFEST_URL, url);
 
+            if (url == null || url.trim().isEmpty())
+                return false;
+
             if(!Utils.downloadFile(url, out_man, null, true))
                 return false;
             if(dev.checkGpgSignatures() && !Utils.downloadFile(url + ".asc", out_sign, null, true))

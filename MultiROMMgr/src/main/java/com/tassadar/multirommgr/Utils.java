@@ -224,6 +224,8 @@ public class Utils {
         try {
             URL url = new URL(strUrl);
             conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(15000);
+            conn.setReadTimeout(30000);
             conn.setInstanceFollowRedirects(true);
             conn.setUseCaches(useCache);
             conn.addRequestProperty("Accept-Encoding", "gzip,deflate");
@@ -243,6 +245,14 @@ public class Utils {
             int res = conn.getResponseCode();
             if(res != HttpURLConnection.HTTP_OK && res != HttpURLConnection.HTTP_PARTIAL) {
                 Log.e(TAG, "downloadFile failed for url \"" + strUrl + "\" with code " + res);
+                return false;
+            }
+
+            // Never append a full response to a partial file when Range was ignored.
+            if (offset > 0 && (res != HttpURLConnection.HTTP_PARTIAL ||
+                    conn.getHeaderField("Content-Range") == null ||
+                    !conn.getHeaderField("Content-Range").startsWith("bytes " + offset + "-"))) {
+                Log.e(TAG, "Server did not honor the requested resume offset");
                 return false;
             }
 
