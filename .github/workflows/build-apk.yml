@@ -47,7 +47,14 @@ jobs:
           grep -q "sdkVersion:'16'" dist/badging.txt
           grep -q "targetSdkVersion:'23'" dist/badging.txt
           python3 - <<'PY'
-          import hashlib, json, pathlib, zipfile
+          import collections, hashlib, json, pathlib, zipfile
+          import xml.etree.ElementTree as ET
+          suites = [ET.parse(p).getroot() for p in pathlib.Path('MultiROMMgr/build/test-results/testReleaseUnitTest').glob('TEST-*.xml')]
+          assert suites, 'No JUnit test reports'
+          assert all(int(s.get('failures', 0)) == 0 and int(s.get('errors', 0)) == 0 for s in suites)
+          print('JUnit tests passed:', sum(int(s.get('tests', 0)) for s in suites))
+          lint = ET.parse('MultiROMMgr/build/reports/lint-results-release.xml').getroot()
+          print('Lint issues:', dict(collections.Counter((i.get('severity'), i.get('id')) for i in lint.findall('issue'))))
           root = pathlib.Path('MultiROMMgr/src/main/assets')
           with zipfile.ZipFile('dist/BitO-MultiROMMgr-001.apk') as apk:
               for name in ('busybox', 'bbootimg', 'gpgv', 'multirom.gpg', 'devices.json'):

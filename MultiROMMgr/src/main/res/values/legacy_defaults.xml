@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fallback for the existing tablet landscape override. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+</resources>

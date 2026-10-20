@@ -67,6 +67,9 @@ target SDK increase, recovery image/kernel change, or embedded executable replac
    SDK levels, APK signatures, exact embedded-asset bytes and runs version tests.
    Lint reports are published with the original non-blocking lint policy.
 
+7. Add a 16dp default for the legacy activity_horizontal_margin resource which
+   otherwise exists only for a tablet landscape configuration (MissingDefaultResource).
+
 ## What this build does not establish
 
 The APK needs root for device operations and a compatible preinstalled MultiROM
